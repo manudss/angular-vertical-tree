@@ -42,20 +42,16 @@ angular.module( 'drg.angularVerticalTree', [] )
                         $templateCache.put( scope.templates.leaf, leaf );
 
                         // compile the template using the isolate scope and insert it into the root element
-                        elem.html( $compile( $templateCache.get( 'drg/angularVerticalTree.tpl.html' ) )( scope ) );
+                        elem.prepend( $compile( $templateCache.get( 'drg/angularVerticalTree.tpl.html' ) )( scope ) );
                     },
                     post : function( scope, elem ) {
                         function updateBranchHeight() {
                             $timeout( function() {
-                                var container = elem.children().eq( 0 );
-                                var breadcrumbs = container.find( '.v-tree-breadcrumb' );
-                                var breadcrumbsOuterHeight = 0;
-                                breadcrumbs.each( function() {
-                                    breadcrumbsOuterHeight += $( this ).outerHeight();
-                                } );
-                                var branch = container.find( '.v-tree-branch' );
-
-                                branch.css( 'height', 'calc(100% - ' + breadcrumbsOuterHeight + 'px)' );
+                                var breadcrumbs = document.querySelectorAll( '.v-tree-breadcrumb-container' )[0];
+                                var containers = document.querySelectorAll( '.v-tree-container' )[0];
+                                var branch = document.querySelectorAll( '.v-tree-branch' )[0];
+                                var size = containers.offsetHeight - breadcrumbs.offsetHeight;
+                                branch.style.height = 'calc(100% - ' + breadcrumbs.offsetHeight + 'px)';
                             } );
                         }
                         updateBranchHeight();
@@ -88,7 +84,8 @@ angular.module( 'drg.angularVerticalTree', [] )
             children : 'children',
             classes : {
                 container : 'panel panel-default',
-                breadcrumb : 'panel-heading',
+                breadcrumb : 'list-group-item',
+                "breadcrumb-container" : 'panel-heading list-group',
                 branch : 'list-group',
                 leaf : 'list-group-item'
             },

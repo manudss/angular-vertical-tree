@@ -1,15 +1,17 @@
 <!-- .panel by default -->
-<div class="v-tree-container" ng-class="opts.classes.container">
+<div class="v-tree-container" ng-class="opts.classes.container" >
 
     <!-- .panel-heading by default -->
-    <a class="v-tree-breadcrumb"
-       href="javascript:;"
-       ng-class="opts.classes.breadcrumb"
-       ng-click="breadcrumbClickHandler(breadcrumb)"
-       ng-include="templates.breadcrumb"
-       ng-repeat="breadcrumb in breadcrumbs"
-       style="display: block;">
-    </a>
+    <div class="v-tree-breadcrumb-container" ng-class="opts.classes.breadcrumb-container">
+        <a class="v-tree-breadcrumb"
+           href="javascript:;"
+           ng-class="opts.classes.breadcrumb"
+           ng-click="breadcrumbClickHandler(breadcrumb)"
+           ng-include="templates.breadcrumb"
+           ng-repeat="breadcrumb in breadcrumbs"
+           style="display: block;">
+        </a>
+    </div>
 
     <!-- .list-group by default -->
     <div class="v-tree-branch" ng-class="opts.classes.branch">

@@ -42,20 +42,16 @@ angular.module( 'drg.angularVerticalTree', [] )
                         $templateCache.put( scope.templates.leaf, leaf );
 
                         // compile the template using the isolate scope and insert it into the root element
-                        elem.html( $compile( $templateCache.get( 'drg/angularVerticalTree.tpl.html' ) )( scope ) );
+                        elem.prepend( $compile( $templateCache.get( 'drg/angularVerticalTree.tpl.html' ) )( scope ) );
                     },
                     post : function( scope, elem ) {
                         function updateBranchHeight() {
                             $timeout( function() {
-                                var container = elem.children().eq( 0 );
-                                var breadcrumbs = container.find( '.v-tree-breadcrumb' );
-                                var breadcrumbsOuterHeight = 0;
-                                breadcrumbs.each( function() {
-                                    breadcrumbsOuterHeight += $( this ).outerHeight();
-                                } );
-                                var branch = container.find( '.v-tree-branch' );
-
-                                branch.css( 'height', 'calc(100% - ' + breadcrumbsOuterHeight + 'px)' );
+                                var breadcrumbs = document.querySelectorAll( '.v-tree-breadcrumb-container' )[0];
+                                var containers = document.querySelectorAll( '.v-tree-container' )[0];
+                                var branch = document.querySelectorAll( '.v-tree-branch' )[0];
+                                var size = containers.offsetHeight - breadcrumbs.offsetHeight;
+                                branch.style.height = 'calc(100% - ' + breadcrumbs.offsetHeight + 'px)';
                             } );
                         }
                         updateBranchHeight();
@@ -88,7 +84,8 @@ angular.module( 'drg.angularVerticalTree', [] )
             children : 'children',
             classes : {
                 container : 'panel panel-default',
-                breadcrumb : 'panel-heading',
+                breadcrumb : 'list-group-item',
+                "breadcrumb-container" : 'panel-heading list-group',
                 branch : 'list-group',
                 leaf : 'list-group-item'
             },
@@ -168,4 +165,4 @@ angular.module( 'drg.angularVerticalTree', [] )
 
     }] );
 
-angular.module("drg.angularVerticalTree").run(["$templateCache", function($templateCache) {$templateCache.put("drg/angularVerticalTree.tpl.html","<!-- .panel by default -->\n<div class=\"v-tree-container\" ng-class=\"opts.classes.container\">\n\n    <!-- .panel-heading by default -->\n    <a class=\"v-tree-breadcrumb\"\n       href=\"javascript:;\"\n       ng-class=\"opts.classes.breadcrumb\"\n       ng-click=\"breadcrumbClickHandler(breadcrumb)\"\n       ng-include=\"templates.breadcrumb\"\n       ng-repeat=\"breadcrumb in breadcrumbs\"\n       style=\"display: block;\">\n    </a>\n\n    <!-- .list-group by default -->\n    <div class=\"v-tree-branch\" ng-class=\"opts.classes.branch\">\n        <!-- .list-group-item by default -->\n        <a class=\"v-tree-leaf\"\n           href=\"javascript:;\"\n           ng-class=\"opts.classes.leaf\"\n           ng-click=\"leafClickHandler(leaf)\"\n           ng-include=\"templates.leaf\"\n           ng-repeat=\"leaf in leaves\">\n        </a>\n        <p class=\"v-tree-empty\" ng-if=\"!leaves || !leaves.length\" ng-bind=\"opts.emptyMessage\"></p>\n    </div>\n\n</div>\n");}]);
+angular.module("drg.angularVerticalTree").run(["$templateCache", function($templateCache) {$templateCache.put("drg/angularVerticalTree.tpl.html","<!-- .panel by default -->\r\n<div class=\"v-tree-container\" ng-class=\"opts.classes.container\" >\r\n\r\n    <!-- .panel-heading by default -->\r\n    <div class=\"v-tree-breadcrumb-container\" ng-class=\"opts.classes.breadcrumb-container\">\r\n        <a class=\"v-tree-breadcrumb\"\r\n           href=\"javascript:;\"\r\n           ng-class=\"opts.classes.breadcrumb\"\r\n           ng-click=\"breadcrumbClickHandler(breadcrumb)\"\r\n           ng-include=\"templates.breadcrumb\"\r\n           ng-repeat=\"breadcrumb in breadcrumbs\"\r\n           style=\"display: block;\">\r\n        </a>\r\n    </div>\r\n\r\n    <!-- .list-group by default -->\r\n    <div class=\"v-tree-branch\" ng-class=\"opts.classes.branch\">\r\n        <!-- .list-group-item by default -->\r\n        <a class=\"v-tree-leaf\"\r\n           href=\"javascript:;\"\r\n           ng-class=\"opts.classes.leaf\"\r\n           ng-click=\"leafClickHandler(leaf)\"\r\n           ng-include=\"templates.leaf\"\r\n           ng-repeat=\"leaf in leaves\">\r\n        </a>\r\n        <p class=\"v-tree-empty\" ng-if=\"!leaves || !leaves.length\" ng-bind=\"opts.emptyMessage\"></p>\r\n    </div>\r\n\r\n</div>\r\n");}]);
